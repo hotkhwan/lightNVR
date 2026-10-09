@@ -12,8 +12,11 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: opensensor/lightnvr
-  REGISTRY_IMAGE: ghcr.io/opensensor/lightnvr
+  # klynx fork build (hotkhwan/lightNVR): publishes to the fork's own GHCR
+  # namespace, never to ghcr.io/opensensor. Only the 0.42.9 + mp4_faststart
+  # branch carries this change; the upstream PR branch keeps the original.
+  IMAGE_NAME: hotkhwan/lightnvr
+  REGISTRY_IMAGE: ghcr.io/hotkhwan/lightnvr
 
 
 jobs:
@@ -29,9 +32,6 @@ jobs:
           - platform: linux/arm64
             runner: ubuntu-24.04-arm
             emulated: false
-          - platform: linux/arm/v7
-            runner: ubuntu-latest
-            emulated: true
 
     steps:
       - name: Checkout
@@ -53,7 +53,7 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=raw,value=latest,enable=true
+            type=raw,value=latest,enable=false
           labels: |
             org.opencontainers.image.title=LightNVR
             org.opencontainers.image.description=Lightweight Network Video Recorder with go2rtc integration
@@ -135,7 +135,7 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=raw,value=latest,enable=true
+            type=raw,value=latest,enable=false
             type=ref,event=pr
           labels: |
             org.opencontainers.image.title=LightNVR
